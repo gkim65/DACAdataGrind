@@ -1,0 +1,42 @@
+---
+title: "DACA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+library(pdftables)
+library(janitor)
+```
+
+```{r pdf data}
+
+# Downloading the latest report from USCIS
+
+# download.file("https://www.uscis.gov/sites/default/files/USCIS/Resources/Reports%20and%20Studies/Immigration%20Forms%20Data/All%20Form%20Types/DACA/DACA_performancedata_fy2020_qtr2.pdf", "uscis.pdf")
+
+# Converted test.pdf to test2.csv
+
+convert_pdf("uscis.pdf", "uscis.csv", api_key = "g0e07z3n5v9e")
+
+# Reading in the data
+
+uscis_year <- read_csv("uscis.csv", skip = 7, 
+                       col_types =  cols(
+                                          Period = col_character(),
+                                          `2Accepted` = col_character(),
+                                          `3Rejected` = col_character(),
+                                          `4Received` = col_character(),
+                                          `5Accepted/Day` = col_character(),
+                                          Approved7 = col_character(),
+                                          Denied8 = col_character(),
+                                          Pending9 = col_character()
+                                        )) %>% 
+  head(27) %>% 
+  tail(26) %>% 
+  clean_names()
+
+```
+
