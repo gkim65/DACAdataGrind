@@ -17,11 +17,11 @@ library(janitor)
 
 # download.file("https://www.uscis.gov/sites/default/files/USCIS/Resources/Reports%20and%20Studies/Immigration%20Forms%20Data/All%20Form%20Types/DACA/DACA_performancedata_fy2020_qtr2.pdf", "uscis.pdf")
 
-# Converted test.pdf to test2.csv
+# Converting pdf to csv using pdftables pacakge.
 
 convert_pdf("uscis.pdf", "uscis.csv", api_key = "g0e07z3n5v9e")
 
-# Reading in the data
+# Reading yearly data
 
 uscis_year <- read_csv("uscis.csv", skip = 7, 
                        col_types =  cols(
@@ -36,6 +36,38 @@ uscis_year <- read_csv("uscis.csv", skip = 7,
                                         )) %>% 
   head(27) %>% 
   tail(26) %>% 
+  clean_names()
+
+# Reading in country of origin data
+
+uscis_country_of_origin <- read_csv("uscis.csv", skip = 79, 
+                                    col_types = cols(
+                                                      `Top Countries of Origin` = col_character(),
+                                                      Initials = col_character(),
+                                                      Renewals = col_character(),
+                                                      Total = col_character(),
+                                                      Initials_1 = col_character(),
+                                                      Renewals_1 = col_character(),
+                                                      Total_1 = col_character()
+                                                    )) %>% 
+  head(28) %>% 
+  tail(27) %>% 
+  clean_names()
+
+# Reading in residence data
+
+uscis_residence <- read_csv("uscis.csv", skip = 127,
+                            col_types = cols(
+                                              Residence = col_character(),
+                                              Initials = col_character(),
+                                              Renewals = col_character(),
+                                              Total = col_character(),
+                                              Initials_1 = col_character(),
+                                              Renewals_1 = col_character(),
+                                              Total_1 = col_character()
+                                            )) %>% 
+  head(64) %>% 
+  tail(63) %>% 
   clean_names()
 
 ```
